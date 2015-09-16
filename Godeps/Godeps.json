@@ -1,0 +1,22 @@
+{
+	"ImportPath": "github.com/seiffert/go-versioning",
+	"GoVersion": "go1.5.1",
+	"Packages": [
+		"./..."
+	],
+	"Deps": [
+		{
+			"ImportPath": "github.com/Luzifer/rconfig",
+			"Comment": "v1.0.1",
+			"Rev": "be3e157291ae82dc3a1fac955889c36b5d496e2e"
+		},
+		{
+			"ImportPath": "github.com/spf13/pflag",
+			"Rev": "f735fdff4ffb34299727eb2e3c9abab588742d41"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "7ad95dd0798a40da1ccdff6dff35fd177b5edf40"
+		}
+	]
+}
