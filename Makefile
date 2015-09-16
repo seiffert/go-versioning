@@ -67,4 +67,13 @@ release:
 	git ci -m "Release v$(VERSION)" VERSION
 	git tag "v$(VERSION)"
 
+retag-releases:
+	for TAG in `git tag -l | grep ^v`; do \
+		TAG_REV=`git rev-list $$TAG | head -n1`; \
+		RELEASE_REV=`git log --pretty=oneline | grep "Release $$TAG" | awk '{ print $$1 }'`; \
+		if [ -n "$$RELEASE_REV" -a "$$RELEASE_REV" != "$$TAG_REV" ]; then \
+			git tag -f $$TAG $$RELEASE_REV; \
+		fi; \
+	done
+
 .PHONY: clean container semver-bump release-major release-minor release-patch release

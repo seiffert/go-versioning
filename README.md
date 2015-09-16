@@ -33,3 +33,11 @@ make targets to create releases:
 
 Each of these targets increments the respective version number in the VERSION file,
 commits it, and tags the commit with the correct version number.
+
+**Note:**  
+
+While preparing this setup, I created several releases in order to test the setup itself.
+Because I went back and forth between commits and edited things in old releases (which is not a good 
+practice in general), I added a Make target `retag-releases` that makes sure that all git tags
+point to the correct release commits. It's probably not a good idea to do this in a real life
+project.
