@@ -11,10 +11,8 @@ BUILD_DIR := $(CURDIR)/.gobuild
 BUILD_DIR_SRC := $(BUILD_DIR)/src/$(PROJECT_NAMESPACE)/$(PROJECT)
 
 VERSION := $(shell cat VERSION)
-VERSION_LABEL := ""
 COMMIT := $(shell git rev-parse --short HEAD)
-
-
+DOCKER_TAG := $(shell git describe --tags --always)
 
 ifndef GOOS
 	GOOS := $(shell go env GOOS)
@@ -48,6 +46,25 @@ docker-image: GOOS=linux
 docker-image: GOARCH=386
 docker-image: clean $(BIN)
 docker-image:
-	docker build -t $(REGISTRY)/$(REGISTRY_NAMESPACE)/$(PROJECT):$(VERSION)$(VERSION_LABEL) .
+	docker build -t $(REGISTRY)/$(REGISTRY_NAMESPACE)/$(PROJECT):$(DOCKER_TAG) .
 
-.PHONY: clean container
+semver-bump:
+	go get github.com/giantswarm/semver-bump
+
+release-major: semver-bump
+	semver-bump major-release
+	$(MAKE) -B release
+
+release-minor: semver-bump
+	semver-bump minor-release
+	$(MAKE) -B release
+
+release-patch: semver-bump
+	semver-bump patch-release
+	$(MAKE) -B release
+
+release:
+	git ci -m "Release v$(VERSION)" VERSION
+	git tag "v$(VERSION)"
+
+.PHONY: clean container semver-bump release-major release-minor release-patch release
