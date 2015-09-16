@@ -35,9 +35,13 @@ Each of these targets increments the respective version number in the VERSION fi
 commits it, and tags the commit with the correct version number.
 
 **Note:**  
-
 While preparing this setup, I created several releases in order to test the setup itself.
 Because I went back and forth between commits and edited things in old releases (which is not a good 
 practice in general), I added a Make target `retag-releases` that makes sure that all git tags
 point to the correct release commits. It's probably not a good idea to do this in a real life
 project.
+
+## Limitations of this approach:
+
+* In the current implementation, there is **no check that your working copy is clean** when executing one of the above-mentioned make targets. This means that you could build a docker image `...:v1.0.0` with changes that are only present on your local hard drive.
+* **Code-Duplication**: Having this kind of logic in Makefiles makes it hard to reuse it in other repositories. This could be resolved by implementing it in a separate tool that is just being executed in the Makefile.
