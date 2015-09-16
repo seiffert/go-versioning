@@ -4,7 +4,7 @@ This repository demonstrates one way to version go projects.
 
 ## Artifacts
 
-* Go binary
+* **Go binary**  
     To create a Go binary from this repository's source code, just
     run `make` without arguments in your local copy.
     Every binary built with this command knows its version number. You can
@@ -15,7 +15,7 @@ This repository demonstrates one way to version go projects.
     go-versionining version 0.3.0 build 2106621
     ```
 
-* Docker image
+* **Docker image**  
     To create a Docker image with the Go binary in it, run `make docker-image`.
     This will build a Docker image with the output of `git describe --tags --always`
     as tag name. This means that when your repository is currently on the revision
