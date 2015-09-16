@@ -1,14 +1,20 @@
 PROJECT := go-versioning
 PROJECT_NAMESPACE := github.com/seiffert
 
+REGISTRY := registry.example.com
+REGISTRY_NAMESPACE := seiffert
+
 BIN := $(PROJECT)
 
 SOURCE_DIR := $(CURDIR)
-BUILD_DIR := "$(CURDIR)/.gobuild"
-BUILD_DIR_SRC := "$(BUILD_DIR)/src/$(PROJECT_NAMESPACE)/$(PROJECT)"
+BUILD_DIR := $(CURDIR)/.gobuild
+BUILD_DIR_SRC := $(BUILD_DIR)/src/$(PROJECT_NAMESPACE)/$(PROJECT)
 
 VERSION := $(shell cat VERSION)
+VERSION_LABEL := ""
 COMMIT := $(shell git rev-parse --short HEAD)
+
+
 
 ifndef GOOS
 	GOOS := $(shell go env GOOS)
@@ -37,3 +43,11 @@ $(BIN): VERSION $(BUILD_DIR)
 
 clean:
 	rm -fr $(BUILD_DIR) $(BIN)
+
+docker-image: GOOS=linux
+docker-image: GOARCH=386
+docker-image: clean $(BIN)
+docker-image:
+	docker build -t $(REGISTRY)/$(REGISTRY_NAMESPACE)/$(PROJECT):$(VERSION)$(VERSION_LABEL) .
+
+.PHONY: clean container
